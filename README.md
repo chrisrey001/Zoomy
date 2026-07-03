@@ -4,7 +4,7 @@ Guess the heavily zoomed-in photo. Zoom out for a clearer view — but the more
 you zoom out, the fewer points you earn. Guess correctly with as little zoom-out
 as possible to top your score. **5 puzzles a day.**
 
-**▶ Play it live: https://dreamy-palmier-e7e7cc.netlify.app/**
+**▶ Play it live: https://zooomy.netlify.app/**
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/chrisrey001/Zoomy)
 
