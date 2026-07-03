@@ -7,6 +7,7 @@ import { scoreFor, potentialPoints, MAX_SCALE, MIN_SCALE } from "./scoring.js";
 import { ZoomView } from "./zoom.js";
 import { buildShareText, shareResult } from "./share.js";
 import * as store from "./storage.js";
+import { icons } from "./icons.js";
 
 // ---- element helpers -------------------------------------------------------
 const $ = (id) => document.getElementById(id);
@@ -185,14 +186,20 @@ function showResult(result) {
   $("result-image").style.backgroundImage = `url("${round.imageUrl.replace(/"/g, "%22")}")`;
 
   const banner = $("result-banner");
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
   if (result.correct && result.tier === "exact") {
-    banner.textContent = "Spot on! 🎯"; banner.className = "result-banner good";
+    const text = result.scale >= 7
+      ? pick(["Spot on — at max zoom!", "Bullseye from a sliver!", "Eagle eyes!"])
+      : pick(["Spot on!", "Nailed it!", "That's the one!"]);
+    banner.innerHTML = `${icons.target} ${text}`; banner.className = "result-banner good";
   } else if (result.correct && result.tier === "typo") {
-    banner.textContent = "Close enough! ✅"; banner.className = "result-banner good";
+    banner.innerHTML = `${icons.check} ${pick(["Close enough!", "We'll allow it!", "Spelling optional."])}`;
+    banner.className = "result-banner good";
   } else if (result.correct) {
-    banner.textContent = "In the ballpark! 👍"; banner.className = "result-banner partial";
+    banner.innerHTML = `${icons.thumbUp} ${pick(["In the ballpark!", "Right neighborhood!", "Warm — partial credit."])}`;
+    banner.className = "result-banner partial";
   } else {
-    banner.textContent = "The answer was…"; banner.className = "result-banner miss";
+    banner.innerHTML = `${icons.eye} The answer was…`; banner.className = "result-banner miss";
   }
 
   $("result-answer").textContent = round.word;
@@ -210,6 +217,72 @@ function showResult(result) {
 }
 
 // ---- day complete ----------------------------------------------------------
+// Personalized headline based on how the day actually went: correct count,
+// how exact the guesses were, how much zoom was spent, and the score.
+function headlineFor(daily, stats) {
+  const rs = daily.results;
+  const n = rs.length;
+  const correct = rs.filter((r) => r.correct);
+  const c = correct.length;
+  const exact = correct.filter((r) => r.tier === "exact").length;
+  const related = correct.filter((r) => r.tier === "related" || r.tier === "close").length;
+  const score = rs.reduce((s, r) => s + r.points, 0);
+  const pct = n ? score / (n * 1000) : 0; // fraction of the max possible
+  const avgScale = c ? correct.reduce((s, r) => s + r.scale, 0) / c : 0;
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const pts = score.toLocaleString();
+
+  let title, sub, icon;
+  if (c === n && n > 0 && exact === n && pct >= 0.85) {
+    icon = icons.confetti;
+    title = pick(["Flawless.", "Absolute legend.", "Pixel whisperer."]);
+    sub = `All ${n} exact with barely a zoom spent — ${pts} points. It doesn't get better.`;
+  } else if (c === n && n > 0 && pct >= 0.7) {
+    icon = icons.confetti;
+    title = pick(["Perfect run!", "Clean sweep!", "Untouchable."]);
+    sub = `You guessed all ${n} for ${pts} points.`;
+  } else if (c === n && n > 0) {
+    icon = icons.confetti;
+    title = pick(["All of them — nice.", `${n} for ${n}.`]);
+    sub = `You got every single one, with some generous zooming along the way. ${pts} points.`;
+  } else if (c === n - 1 && n > 1) {
+    icon = icons.search;
+    title = pick(["So close to perfect.", "One got away."]);
+    sub = pct >= 0.55
+      ? `${c} of ${n} for a strong ${pts} points — one slipped through the lens.`
+      : `${c} of ${n} guessed. That last one will haunt you until tomorrow.`;
+  } else if (c >= Math.ceil(n * 0.6)) {
+    icon = icons.thumbUp;
+    title = pick(["A solid day at the lens.", "More hits than misses."]);
+    sub = avgScale >= 6
+      ? `${c} of ${n}, mostly from deep zoom — ${pts} points.`
+      : `${c} of ${n} for ${pts} points.`;
+  } else if (c >= 2) {
+    icon = icons.search;
+    title = pick(["A mixed bag.", "Win some, zoom some."]);
+    sub = related >= 2
+      ? `${c} of ${n} — your instincts were in the right neighborhood, ${pts} points.`
+      : `${c} of ${n} for ${pts} points. The pixels put up a fight today.`;
+  } else if (c === 1) {
+    icon = icons.search;
+    title = pick(["One is not zero.", "A lone victory."]);
+    sub = `You salvaged ${pts} points from a tricky set. Tomorrow's a new lens.`;
+  } else {
+    icon = icons.moodSad;
+    title = pick(["The magnifying glass won today.", "Blanked — it happens."]);
+    sub = "Zero out of " + n + ". Tomorrow the pixels won't stand a chance.";
+  }
+  if (stats.streak >= 3) sub += ` ${stats.streak}-day streak going.`;
+  return { title, sub, icon };
+}
+
+function stripDot(r) {
+  const cls = !r.correct ? "dot-miss"
+    : (r.tier === "related" || r.tier === "close") ? "dot-partial"
+    : r.scale >= 6 ? "dot-great" : "dot-ok";
+  return `<span class="dot ${cls}" title="${r.word}">${icons.dot}</span>`;
+}
+
 function showDone() {
   const daily = store.getDaily();
   const stats = store.getStats();
@@ -218,12 +291,10 @@ function showDone() {
   $("done-correct").textContent = `${correct}/${daily.results.length}`;
   $("done-best").textContent = stats.bestDay.toLocaleString();
   $("done-streak").textContent = stats.streak;
-  $("done-strip").textContent = daily.results
-    .map((r) => (!r.correct ? "⚪" : (r.tier === "related" || r.tier === "close") ? "🟠" : r.scale >= 6 ? "🟢" : "🟡"))
-    .join(" ");
-  $("done-sub").textContent = correct === daily.results.length
-    ? "Perfect run — you guessed them all!"
-    : "Nice work today.";
+  $("done-strip").innerHTML = daily.results.map(stripDot).join("");
+  const h = headlineFor(daily, stats);
+  $("done-title").innerHTML = `${h.icon} ${h.title}`;
+  $("done-sub").textContent = h.sub;
   show("done");
 }
 
@@ -291,4 +362,4 @@ function init() {
 document.addEventListener("DOMContentLoaded", init);
 
 // expose a tiny harness for console/manual testing
-window.Zoomy = { store, gradeGuess, scoreFor, buildShareText };
+window.Zooomy = { store, gradeGuess, scoreFor, buildShareText };

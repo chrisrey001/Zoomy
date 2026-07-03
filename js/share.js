@@ -18,11 +18,13 @@ export function buildShareText(daily) {
   const correct = results.filter((r) => r.correct).length;
   const strip = results.map(roundEmoji).join("");
   const dateStr = daily.date || todayKey();
+  // NB: this is plain clipboard text (Wordle-style), so the strip stays emoji —
+  // SVG icons can't travel in a text share.
   return (
-    `Zoomy ${dateStr} 🔍\n` +
+    `Zooomy ${dateStr} 🔍\n` +
     `${correct}/${results.length} guessed · ${total.toLocaleString()} pts\n` +
     `${strip}\n` +
-    `Play: ${location.origin || "https://zoomy.netlify.app"}`
+    `Play: ${location.origin || "https://zooomy.netlify.app"}`
   );
 }
 
@@ -32,7 +34,7 @@ export async function shareResult(daily) {
   const text = buildShareText(daily);
   try {
     if (navigator.share) {
-      await navigator.share({ title: "Zoomy", text });
+      await navigator.share({ title: "Zooomy", text });
       return "shared";
     }
   } catch {

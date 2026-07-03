@@ -1,4 +1,4 @@
-# Zoomy 🔍
+# Zooomy
 
 Guess the heavily zoomed-in photo. Zoom out for a clearer view — but the more
 you zoom out, the fewer points you earn. Guess correctly with as little zoom-out
@@ -22,7 +22,7 @@ One-click deploy: the button above imports this repo into Netlify (publish dir
 ## How it works (the clever bit)
 
 To auto-score a guess, the game has to *know* what each image is. Random image
-feeds don't come with reliable labels, so Zoomy flips it around:
+feeds don't come with reliable labels, so Zooomy flips it around:
 
 - A curated **word bank** (`js/wordBank.js`) groups concrete items by category,
   each with synonyms (full credit) and broader terms (partial credit).
@@ -69,10 +69,10 @@ you need internet access to load puzzles.
 Open the browser console on the running game:
 
 ```js
-Zoomy.gradeGuess("plant", { word: "fern", synonyms: [], hypernyms: ["plant","leaf"] }).accuracy // 0.4
-Zoomy.gradeGuess("ferm",  { word: "fern", synonyms: [], hypernyms: [] }).tier                   // "typo"
-Zoomy.scoreFor(8, 1)  // 1000  (max zoom, perfect guess)
-Zoomy.scoreFor(1, 1)  // 100   (fully zoomed out)
+Zooomy.gradeGuess("plant", { word: "fern", synonyms: [], hypernyms: ["plant","leaf"] }).accuracy // 0.4
+Zooomy.gradeGuess("ferm",  { word: "fern", synonyms: [], hypernyms: [] }).tier                   // "typo"
+Zooomy.scoreFor(8, 1)  // 1000  (max zoom, perfect guess)
+Zooomy.scoreFor(1, 1)  // 100   (fully zoomed out)
 ```
 
 ## Deploy to Netlify

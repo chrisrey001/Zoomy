@@ -18,7 +18,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: var(--ink);
   background:
     radial-gradient(1200px 600px at 15% -10%, rgba(124, 92, 255, 0.28), transparent 60%),
@@ -43,18 +43,31 @@ body {
 .screen.active { display: flex; flex-direction: column; gap: 16px; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
+/* ---- icons (inline Tabler SVGs) ---- */
+.ti { width: 1em; height: 1em; vertical-align: -0.125em; flex: 0 0 auto; }
+.btn .ti { width: 1.15em; height: 1.15em; margin-right: 2px; }
+.btn-icon { line-height: 0; }
+
 /* ---- brand ---- */
 .brand { text-align: center; }
 .logo {
   font-size: clamp(2.4rem, 9vw, 3.4rem);
   margin: 0;
-  font-weight: 800;
-  letter-spacing: -1px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  display: flex; align-items: center; justify-content: center; gap: 0.18em;
+}
+.logo-text {
   background: linear-gradient(90deg, var(--brand), var(--brand-2));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.logo span { color: var(--brand-2); -webkit-text-fill-color: initial; }
-.logo .lens { -webkit-text-fill-color: initial; }
+.logo-icon { color: var(--brand-2); width: 0.82em; height: 0.82em; }
+.done-title {
+  font-size: clamp(2rem, 8vw, 2.8rem);
+  margin: 0; font-weight: 900; letter-spacing: -1px;
+  display: flex; align-items: center; justify-content: center; gap: 0.25em;
+}
+.done-title .ti { color: var(--brand-2); width: 0.9em; height: 0.9em; }
 .tagline { color: var(--muted); margin: 8px 0 0; font-size: 1rem; }
 
 /* ---- card ---- */
@@ -142,10 +155,11 @@ body {
 
 .zoom-bar { display: flex; align-items: center; gap: 12px; }
 .btn-zoom {
-  width: 52px; height: 52px; border-radius: 14px; font-size: 1.5rem; font-weight: 800;
+  width: 52px; height: 52px; border-radius: 14px;
   background: var(--card-2); border: 1px solid rgba(255, 255, 255, 0.1); flex: 0 0 auto;
-  display: flex; align-items: center; justify-content: center; line-height: 1;
+  display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0;
 }
+.btn-zoom .ti { width: 24px; height: 24px; margin: 0; }
 .zoom-meter {
   flex: 1; height: 12px; border-radius: 999px; overflow: hidden;
   background: rgba(255, 255, 255, 0.08);
@@ -178,7 +192,11 @@ body {
 .toast.miss { border-color: var(--miss); }
 
 /* ---- result ---- */
-.result-banner { text-align: center; font-size: 1.5rem; font-weight: 800; }
+.result-banner {
+  text-align: center; font-size: 1.5rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 0.3em;
+}
+.result-banner .ti { width: 1.1em; height: 1.1em; }
 .result-banner.good { color: var(--good); }
 .result-banner.partial { color: var(--partial); }
 .result-banner.miss { color: var(--miss); }
@@ -199,7 +217,15 @@ body {
 
 /* ---- done ---- */
 .done-total { text-align: center; }
-.done-strip { text-align: center; font-size: 1.8rem; letter-spacing: 4px; }
+.done-strip {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.done-strip .dot { line-height: 0; }
+.done-strip .dot .ti { width: 22px; height: 22px; }
+.dot-great { color: var(--good); }
+.dot-ok { color: var(--partial); }
+.dot-partial { color: #fb923c; }
+.dot-miss { color: rgba(255, 255, 255, 0.22); }
 
 @media (max-width: 380px) {
   .stat-num { font-size: 1.1rem; }

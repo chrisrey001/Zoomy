@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Zoomy — guess the heavily zoomed-in photo. Zoom out for a clearer view, but earn fewer points. 5 puzzles a day." />
+  <meta name="description" content="Zooomy — guess the heavily zoomed-in photo. Zoom out for a clearer view, but earn fewer points. 5 puzzles a day." />
   <meta name="theme-color" content="#0f1020" />
-  <meta property="og:title" content="Zoomy 🔍" />
+  <meta property="og:title" content="Zooomy" />
   <meta property="og:description" content="Guess the zoomed-in photo. The less you zoom out, the more you score. 5 puzzles a day." />
-  <title>Zoomy 🔍 — Guess the Zoomed-In Photo</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>" />
+  <title>Zooomy — Guess the Zoomed-In Photo</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c5cff' stroke-width='2.5' stroke-linecap='round'><path d='M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0'/><path d='M21 21l-6 -6'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..1000&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -17,7 +20,7 @@
     <!-- ===================== HOME ===================== -->
     <section id="screen-home" class="screen active">
       <header class="brand">
-        <h1 class="logo">Zoom<span>y</span> <span class="lens">🔍</span></h1>
+        <h1 class="logo"><span class="logo-text">Zooomy</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ti logo-icon" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg></h1>
         <p class="tagline">Guess the zoomed-in photo. The less you zoom out, the more you score.</p>
       </header>
 
@@ -51,7 +54,7 @@
     <!-- ===================== ROUND ===================== -->
     <section id="screen-round" class="screen">
       <div class="round-top">
-        <button id="quit-btn" class="btn btn-ghost btn-sm" title="Back home">✕</button>
+        <button id="quit-btn" class="btn btn-ghost btn-sm btn-icon" title="Back home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg></button>
         <div class="round-meta">
           <span id="round-counter" class="pill">Round 1 / 5</span>
           <span id="round-category" class="pill pill-soft">Category</span>
@@ -66,9 +69,9 @@
       </div>
 
       <div class="zoom-bar">
-        <button id="zoom-in-btn" class="btn btn-zoom" title="Zoom back in">＋</button>
+        <button id="zoom-in-btn" class="btn btn-zoom" title="Zoom back in" aria-label="Zoom in"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M7 10l6 0"/><path d="M10 7l0 6"/><path d="M21 21l-6 -6"/></svg></button>
         <div class="zoom-meter" aria-hidden="true"><div id="zoom-fill" class="zoom-fill"></div></div>
-        <button id="zoom-out-btn" class="btn btn-zoom" title="Zoom out (fewer points)">－</button>
+        <button id="zoom-out-btn" class="btn btn-zoom" title="Zoom out (fewer points)" aria-label="Zoom out"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M7 10l6 0"/><path d="M21 21l-6 -6"/></svg></button>
       </div>
       <p class="zoom-hint"><span id="zoom-level-text">Max zoom · full points</span></p>
 
@@ -99,7 +102,7 @@
     <!-- ===================== DAY COMPLETE ===================== -->
     <section id="screen-done" class="screen">
       <header class="brand">
-        <h1 class="logo">That's a wrap! 🎉</h1>
+        <h1 class="done-title" id="done-title">That's a wrap!</h1>
         <p class="tagline" id="done-sub">You finished today's puzzles.</p>
       </header>
       <div class="card">
@@ -113,7 +116,7 @@
           <div class="stat"><span id="done-best" class="stat-num">0</span><span class="stat-label">best day</span></div>
           <div class="stat"><span id="done-streak" class="stat-num">0</span><span class="stat-label">day streak</span></div>
         </div>
-        <button id="share-btn" class="btn btn-primary btn-big">Share score</button>
+        <button id="share-btn" class="btn btn-primary btn-big"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg> Share score</button>
         <button id="done-home-btn" class="btn btn-ghost">Back home</button>
         <p class="note">Come back tomorrow for 5 new puzzles.</p>
       </div>
