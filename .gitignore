@@ -1,0 +1,8 @@
+# Zoomy is a no-build static site. Ignore only editor/OS/tooling cruft.
+.DS_Store
+Thumbs.db
+*.log
+.netlify/
+node_modules/
+.vscode/
+.idea/

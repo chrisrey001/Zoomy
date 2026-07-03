@@ -1,0 +1,20 @@
+# Zoomy is a pure static site — no build step. Netlify just serves the folder.
+[build]
+  publish = "."
+  command = ""
+
+# Long-cache the immutable-ish assets, but always revalidate the HTML.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

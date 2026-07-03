@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Zoomy — guess the heavily zoomed-in photo. Zoom out for a clearer view, but earn fewer points. 5 puzzles a day." />
+  <meta name="theme-color" content="#0f1020" />
+  <meta property="og:title" content="Zoomy 🔍" />
+  <meta property="og:description" content="Guess the zoomed-in photo. The less you zoom out, the more you score. 5 puzzles a day." />
+  <title>Zoomy 🔍 — Guess the Zoomed-In Photo</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ===================== HOME ===================== -->
+    <section id="screen-home" class="screen active">
+      <header class="brand">
+        <h1 class="logo">Zoom<span>y</span> <span class="lens">🔍</span></h1>
+        <p class="tagline">Guess the zoomed-in photo. The less you zoom out, the more you score.</p>
+      </header>
+
+      <div class="card">
+        <div class="progress-row">
+          <div class="stat"><span id="home-left" class="stat-num">5</span><span class="stat-label">left today</span></div>
+          <div class="stat"><span id="home-today" class="stat-num">0</span><span class="stat-label">today's pts</span></div>
+          <div class="stat"><span id="home-best" class="stat-num">0</span><span class="stat-label">best day</span></div>
+          <div class="stat"><span id="home-streak" class="stat-num">0</span><span class="stat-label">day streak</span></div>
+        </div>
+
+        <label class="field-label" for="category">Category</label>
+        <select id="category" class="select"></select>
+
+        <button id="play-btn" class="btn btn-primary btn-big">Play</button>
+        <p id="home-note" class="note"></p>
+      </div>
+
+      <details class="how">
+        <summary>How to play</summary>
+        <ol>
+          <li>You'll see a tiny, zoomed-in crop of a real photo.</li>
+          <li>Type your guess — close answers still score (fern → "plant").</li>
+          <li>Stuck? <strong>Zoom out</strong> for a clearer view, but you'll earn fewer points.</li>
+          <li>Guess at full zoom for up to <strong>1000</strong> points. You get <strong>5 puzzles a day</strong>.</li>
+        </ol>
+      </details>
+      <footer class="foot">Free · no login · scores stay on your device</footer>
+    </section>
+
+    <!-- ===================== ROUND ===================== -->
+    <section id="screen-round" class="screen">
+      <div class="round-top">
+        <button id="quit-btn" class="btn btn-ghost btn-sm" title="Back home">✕</button>
+        <div class="round-meta">
+          <span id="round-counter" class="pill">Round 1 / 5</span>
+          <span id="round-category" class="pill pill-soft">Category</span>
+        </div>
+        <div class="points-live" title="Points if you guess correctly now">
+          <span id="potential" class="points-num">1000</span><span class="points-lbl">pts</span>
+        </div>
+      </div>
+
+      <div id="viewport" class="viewport" aria-label="Zoomed-in image to guess">
+        <div id="viewport-loading" class="viewport-loading">Loading a fresh puzzle…</div>
+      </div>
+
+      <div class="zoom-bar">
+        <button id="zoom-in-btn" class="btn btn-zoom" title="Zoom back in">＋</button>
+        <div class="zoom-meter" aria-hidden="true"><div id="zoom-fill" class="zoom-fill"></div></div>
+        <button id="zoom-out-btn" class="btn btn-zoom" title="Zoom out (fewer points)">－</button>
+      </div>
+      <p class="zoom-hint"><span id="zoom-level-text">Max zoom · full points</span></p>
+
+      <form id="guess-form" class="guess-form" autocomplete="off">
+        <input id="guess-input" class="guess-input" type="text" placeholder="What is it?" autocomplete="off" autocapitalize="none" spellcheck="false" />
+        <button type="submit" class="btn btn-primary">Guess</button>
+      </form>
+      <div class="round-actions">
+        <button id="reveal-btn" class="btn btn-ghost btn-sm">Give up / reveal</button>
+      </div>
+      <div id="toast" class="toast"></div>
+    </section>
+
+    <!-- ===================== RESULT ===================== -->
+    <section id="screen-result" class="screen">
+      <div id="result-banner" class="result-banner">Nice!</div>
+      <div id="result-image" class="result-image"></div>
+      <h2 id="result-answer" class="result-answer">Answer</h2>
+      <p id="result-blurb" class="result-blurb"></p>
+      <div class="result-points">
+        <span id="result-points-num" class="big-points">0</span>
+        <span class="big-points-lbl">points</span>
+      </div>
+      <p id="result-detail" class="note"></p>
+      <button id="next-btn" class="btn btn-primary btn-big">Next puzzle</button>
+    </section>
+
+    <!-- ===================== DAY COMPLETE ===================== -->
+    <section id="screen-done" class="screen">
+      <header class="brand">
+        <h1 class="logo">That's a wrap! 🎉</h1>
+        <p class="tagline" id="done-sub">You finished today's puzzles.</p>
+      </header>
+      <div class="card">
+        <div class="done-total">
+          <span id="done-score" class="big-points">0</span>
+          <span class="big-points-lbl">points today</span>
+        </div>
+        <div id="done-strip" class="done-strip"></div>
+        <div class="progress-row">
+          <div class="stat"><span id="done-correct" class="stat-num">0/5</span><span class="stat-label">guessed</span></div>
+          <div class="stat"><span id="done-best" class="stat-num">0</span><span class="stat-label">best day</span></div>
+          <div class="stat"><span id="done-streak" class="stat-num">0</span><span class="stat-label">day streak</span></div>
+        </div>
+        <button id="share-btn" class="btn btn-primary btn-big">Share score</button>
+        <button id="done-home-btn" class="btn btn-ghost">Back home</button>
+        <p class="note">Come back tomorrow for 5 new puzzles.</p>
+      </div>
+    </section>
+
+  </div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
