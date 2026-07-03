@@ -6,6 +6,11 @@ as possible to top your score. **5 puzzles a day.**
 
 Live game: *(add your Netlify URL here after deploying)*
 
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/chrisrey001/Zoomy)
+
+One-click deploy: the button above imports this repo into Netlify (publish dir
+`.`, no build — already set in `netlify.toml`). Nothing else to configure.
+
 ## How it plays
 
 1. You see a tiny, zoomed-in crop of a real photo (e.g. a tin can).
